@@ -2,26 +2,23 @@ from typing import TYPE_CHECKING
 import uuid
 import datetime
 
-from sqlalchemy import Boolean, Column, Integer, String, DateTime
+from sqlalchemy import Boolean, Column, Integer, String, DateTime, Numeric, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
 from app.db.base_class import Base
 
 if TYPE_CHECKING:
-    from .advert import Advert # noqa: F401
     from .item import Item  # noqa: F401
 
 
-class User(Base):
+class Advert(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
-    full_name = Column(String, index=True, nullable=False)
-    email = Column(String, unique=True, index=True, nullable=False)
-    phone_number = Column(Integer, nullable=True)
-    hashed_password = Column(String, nullable=False)
+    title = Column(String, index=True, nullable=False)
+    description = Column(String, index=True, nullable=False)
+    location = Column(String, index=True, nullable=False)
     is_active = Column(Boolean(), default=True)
-    is_superuser = Column(Boolean(), default=False)
-    items = relationship("Item", back_populates="owner")
-    adverts = relationship("Advert", back_populates="owner")
+    owner_id = Column(UUID(as_uuid=True), ForeignKey("user.id"))
+    owner = relationship("User", back_populates="items")
     created_date = Column(DateTime(), nullable=False, default=datetime.datetime.utcnow())
     updated_date = Column(DateTime(), nullable=False, default=datetime.datetime.utcnow())
