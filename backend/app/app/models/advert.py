@@ -16,6 +16,6 @@ class Advert(Base):
     location = Column(String, index=True, nullable=False)
     is_active = Column(Boolean(), default=True)
     owner_id = Column(UUID(as_uuid=True), ForeignKey("user.id"))
-    owner = relationship("User", back_populates="items")
+    owner = relationship("User", back_populates="adverts")
     created_date = Column(DateTime(), nullable=False, default=datetime.datetime.utcnow())
     updated_date = Column(DateTime(), nullable=False, default=datetime.datetime.utcnow())

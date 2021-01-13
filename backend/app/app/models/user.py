@@ -10,7 +10,6 @@ from app.db.base_class import Base
 
 if TYPE_CHECKING:
     from .advert import Advert # noqa: F401
-    from .item import Item  # noqa: F401
 
 
 class User(Base):
@@ -21,7 +20,6 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean(), default=True)
     is_superuser = Column(Boolean(), default=False)
-    items = relationship("Item", back_populates="owner")
     adverts = relationship("Advert", back_populates="owner")
     created_date = Column(DateTime(), nullable=False, default=datetime.datetime.utcnow())
     updated_date = Column(DateTime(), nullable=False, default=datetime.datetime.utcnow())
